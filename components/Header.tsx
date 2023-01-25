@@ -13,10 +13,10 @@ export default function Header() {
       <div className='flex items-center space-x-2'>
         <img 
           className='rounded-full h-20 w-20'
-          src="https://i.imgur.com/4h7mAu7.png"
+          src="https://i.imgur.com/uoDIkL8.jpg"
         />
         <div>
-          <h1 className='text-lg text-white font-bold'>PAPAFAM DRAW</h1>
+          <h1 className='text-lg text-white font-bold'>LOTTERY DRAW</h1>
           <p className='text-xs text-emerald-500 truncate'>User: {address?.substring(0,5)}...{address?.substring(address?.length, address?.length - 5)}</p>
         </div>
       </div>

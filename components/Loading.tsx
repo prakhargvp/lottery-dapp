@@ -7,10 +7,10 @@ export default function Loading() {
       <div className='flex items-center space-x-2 mb-10'>
         <img 
           className='rounded-full h-20 w-20'
-          src="https://i.imgur.com/4h7mAu7.png" 
+          src="https://i.imgur.com/uoDIkL8.jpg" 
           alt="" 
         />
-        <h1 className='text-lg text-white font-bold'> Loading the Lottery Draw </h1>
+        <h1 className='text-lg text-white font-bold'> Loading the LOTTERY DRAW </h1>
       </div>
       <PropagateLoader color="white" size={30}/>
     </div>

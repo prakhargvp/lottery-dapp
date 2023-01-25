@@ -9,7 +9,7 @@ export default function Login() {
         <div className='flex flex-col items-center mb-10'>
             <img 
                 className="rounded-full h-56 wo-56 mb-10" 
-                src="https://i.imgur.com/4h7mAu7.png" 
+                src="https://i.imgur.com/uoDIkL8.jpg" 
                 alt=""
             />
             <h1 className='text-6xl text-white font-bold'>The Lottery DRAW</h1>
