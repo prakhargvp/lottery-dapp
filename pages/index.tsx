@@ -1,4 +1,4 @@
-import { useAddress, useContract, useContractRead } from '@thirdweb-dev/react'
+import { useAddress, useContract, useContractRead, useContractWrite } from '@thirdweb-dev/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
@@ -7,6 +7,8 @@ import Header from '../components/Header'
 import Loading from '../components/Loading'
 import Login from '../components/Login'
 import { currency } from '../constants';
+import CountDownTimer from '../components/CountDownTimer';
+import { toast } from 'react-hot-toast';
 
 const Home: NextPage = () => {
 
@@ -22,8 +24,33 @@ const Home: NextPage = () => {
   const { data: currentWinningReward } = useContractRead(contract, "CurrentWinningReward");
   const { data: ticketPrice } = useContractRead(contract, "ticketPrice");
   const { data: ticketCommission } = useContractRead(contract, "ticketCommission");
+  const { mutateAsync: BuyTickets } = useContractWrite(contract, "BuyTickets");
 
-  console.log(address);
+
+
+  const handleClick = async () => {
+    if(!ticketPrice) return;
+    const notification = toast.loading("Buying your tickets...")
+
+    try {
+      const data = await BuyTickets([{
+        value: ethers.utils.parseEther(
+          (Number(ethers.utils.formatEther(ticketPrice)) * quantity).toString()
+        )
+      }])
+
+      toast.success("Tickets purchased successfully!", {
+        id: notification
+      })
+
+      console.info("Contract call success", data)
+    } catch(err) {
+      toast.error("Whoops something went wrong!", {
+        id: notification
+      })
+      console.error("contract call failure", err);
+    }
+  }
 
   if(isLoading) return  <Loading />;
   if(!address) return <Login />;
@@ -58,6 +85,9 @@ const Home: NextPage = () => {
               </div>
             </div>
             {/* Countdown timer */}
+            <div className='mt-5 mb-3'>
+              <CountDownTimer />
+            </div>
           </div>
           <div className='stats-container space-y-2'>
             <div className="stats-container">
@@ -107,6 +137,7 @@ const Home: NextPage = () => {
                 rounded-md text-white shadow-xl disabled:from-gray-600 
                 disabled:text-gray-100 
                 disabled:to-gray-600 disabled:cursor-not-allowed'
+                onClick={handleClick}
               >Buy tickets</button>
             </div>
           </div>
