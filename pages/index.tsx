@@ -9,6 +9,8 @@ import Login from '../components/Login'
 import { currency } from '../constants';
 import CountDownTimer from '../components/CountDownTimer';
 import { toast } from 'react-hot-toast';
+import Marquee from 'react-fast-marquee';
+import AdminControls from '../components/AdminControls';
 
 const Home: NextPage = () => {
 
@@ -29,6 +31,10 @@ const Home: NextPage = () => {
   const { mutateAsync: BuyTickets } = useContractWrite(contract, "BuyTickets");
   const { data: winnings } = useContractRead(contract, "getWinningsForAddress", address);
   const { mutateAsync: WithdrawWinnings } = useContractWrite(contract, "WithdrawWinnings");
+
+  const { data: lastWinner } = useContractRead(contract, "lastWinner");
+  const { data: lastWinnerAmount } = useContractRead(contract, "lastWinnerAmount");
+  const { data: isLotteryOperator } = useContractRead(contract, "lotteryOperator");
 
 
   useEffect(() => {
@@ -89,7 +95,19 @@ const Home: NextPage = () => {
       </Head>
       <div className='flex-1'>
         <Header />
+        <Marquee className="bg-[#0A1F1C] p-5 mb-5" gradient={false} speed={100}>
+          <div className='flex space-x-2 mx-10 text-white'>
+            <h4>Last Winner: {lastWinner?.toString()}</h4>
+            <h4>Previous winnings: {lastWinnerAmount && 
+            ethers.utils.formatEther(lastWinnerAmount?.toString())}{" "}</h4>
+          </div>
+        </Marquee>
 
+        {isLotteryOperator === address && (
+          <div className='flex justify-center'>
+            <AdminControls />
+          </div>
+        )}
         {winnings > 0 && (
           <div onClick={onWithdrawWinnings} className='max-w-md md:max-w-2xl lg-max-w-4xl mx-auto mt-5'>
             <button className='p-5 bg-gradient-to-b from-orange-500
