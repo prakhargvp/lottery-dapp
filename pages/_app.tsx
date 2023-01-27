@@ -5,9 +5,10 @@ import { Toaster } from 'react-hot-toast'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
+  const dChainId = process.env.NODE_ENV == "production" ? ChainId.Polygon : ChainId.Mumbai;
 
   return (
-    <ThirdwebProvider desiredChainId={ChainId.Mumbai}>
+    <ThirdwebProvider desiredChainId={dChainId}>
       <Component {...pageProps} />
       <Toaster />
     </ThirdwebProvider>
